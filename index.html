@@ -11,7 +11,7 @@
 <style>
 :root{--bg:#212123;--bg-s:#272729;--bg-c:#2A2A2C;--ink:#F5F5F5;--ink-d:#A8A8AE;--ink-f:#6E6E73;--lime:#D0FF71;--lime-on:#15170d;--line:rgba(255,255,255,.08);--line-s:rgba(255,255,255,.04);--ease:cubic-bezier(.16,.84,.44,1);--glow:0 12px 36px -10px rgba(208,255,113,.45);}
 *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-wrap:break-word;}
 a{color:inherit;text-decoration:none;}::selection{background:var(--lime);color:var(--lime-on);}
 
 /* EFFECTS */
@@ -28,6 +28,7 @@ a{color:inherit;text-decoration:none;}::selection{background:var(--lime);color:v
 #cring{position:fixed;top:0;left:0;width:36px;height:36px;border:1.5px solid rgba(208,255,113,.45);border-radius:50%;pointer-events:none;z-index:300;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s;}
 #cdot{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:301;transform:translate(-50%,-50%);}
 #cring.big{width:58px;height:58px;border-color:var(--lime);background:rgba(208,255,113,.07);}
+@media(pointer:coarse){#cring,#cdot{display:none;}}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .rv.in{opacity:1;transform:translateY(0);}
 .rv.d1{transition-delay:.07s;}.rv.d2{transition-delay:.14s;}.rv.d3{transition-delay:.21s;}.rv.d4{transition-delay:.28s;}
@@ -261,7 +262,7 @@ svg.chart-svg{width:100%;height:150px;overflow:visible;}
 .faq-i.open .faq-arr{transform:rotate(45deg);background:var(--lime);border-color:var(--lime);color:var(--lime-on);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
 .faq-a-inner{padding:0 24px 20px;color:var(--ink-d);font-size:14.5px;line-height:1.65;}
-.faq-i.open .faq-a{max-height:220px;}
+.faq-i.open .faq-a{max-height:320px;}
 
 /* NEWSLETTER */
 .nl-box{background:var(--bg-s);border:1px solid var(--line);border-radius:24px;padding:64px;text-align:center;}
@@ -358,7 +359,7 @@ textarea{resize:vertical;min-height:100px;}select option{background:#2A2A2C;}
 
 /* POD — pyramid layout: strategist centre top, 4 below */
 .pod-pyramid{display:flex;flex-direction:column;gap:12px;position:relative;z-index:2;}
-.pod-row{display:flex;justify-content:center;gap:12px;}
+.pod-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;}
 .pod-member{background:#191A1B;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:22px 16px;text-align:center;position:relative;overflow:hidden;transition:transform .3s var(--ease),border-color .3s,background .3s;width:186px;flex-shrink:0;}
 .pod-member:hover{transform:translateY(-6px);border-color:rgba(208,255,113,.3);background:rgba(208,255,113,.04);}
 .pod-member::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:80%;height:60px;background:radial-gradient(ellipse,rgba(208,255,113,.1) 0%,transparent 70%);pointer-events:none;}
@@ -396,7 +397,7 @@ textarea{resize:vertical;min-height:100px;}select option{background:#2A2A2C;}
   .phone-wrap{display:none;}
   .nl{display:none;}.bur{display:block;}
 }
-@media(max-width:600px){section{padding:80px 0;}.f2{grid-template-columns:1fr;}.nl-box{padding:40px 24px;}.ct-form-box{padding:28px 20px;}.cmp-4{grid-template-columns:1fr;}.pod-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){section{padding:80px 0;}.f2{grid-template-columns:1fr;}.nl-box{padding:40px 24px;}.ct-form-box{padding:28px 20px;}.cmp-4{grid-template-columns:1fr;}.pod-grid{grid-template-columns:1fr 1fr;}input,select,textarea{font-size:16px;}.nl-form input{font-size:16px;}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 
 /* ── FOOTER ── */
@@ -866,7 +867,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 28px;position:relative;z-
     </div></div>
   </div>
   <div class="g-label">WIN-BACK</div>
-</div></div><div class="g-item">
+</div><div class="g-item">
   <div class="g-thumb" style="background:linear-gradient(160deg,#1A2318,#2C3B2A);">
     <div class="mini-phone">
       <div class="mini-screen" style="background:#F5EDD8;">
@@ -887,7 +888,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 28px;position:relative;z-
     </div>
   </div>
   <div class="g-label">GROOMING · WELCOME</div>
-</div></div>
+</div></div></div>
   <div class="wrap" style="margin-top:28px;">
     <p style="color:var(--ink-d);font-size:15px;line-height:1.6;max-width:560px;">Clean, bold, purpose-driven layouts that don&rsquo;t just look good &mdash; they perform.</p>
     <div style="margin-top:20px;"><a href="#" class="btn bp" data-page="contact" data-magnetic>Get yours &rarr;</a></div>
@@ -1154,8 +1155,9 @@ footer{border-top:1px solid var(--line);padding:52px 0 28px;position:relative;z-
 <div class="em-txt">Join 10,000+ beauty lovers getting exclusive drops and offers.</div>
 </div></div></div>
       <div class="cs-info"><span class="cs-tag">Beauty &middot; List Growth</span><h3>Bloom Lab &mdash; Sign-up Capture</h3><p>On-site pop-up and sign-up flow growing the list 40% in 30 days. Low-friction capture, immediate welcome discount.</p><div class="cs-stats"><div><div class="cs-sn">40%</div><div class="cs-sl">List growth</div></div><div><div class="cs-sn">8.2%</div><div class="cs-sl">Pop-up CVR</div></div><div><div class="cs-sn">67%</div><div class="cs-sl">Welcome open</div></div></div></div>
+    </div>
 
-      <!-- MudRock Natural Care -->
+    <!-- MudRock Natural Care -->
       <div class="cs-card rv">
         <div class="cs-thumb" style="background:linear-gradient(135deg,#1A2318,#2C3B2A);">
           <div class="em-phone">
@@ -1195,7 +1197,6 @@ footer{border-top:1px solid var(--line);padding:52px 0 28px;position:relative;z-
         </div>
       </div>
 
-    </div>
   </div>
 </div></section>
 <footer>
