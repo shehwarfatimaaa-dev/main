@@ -1447,11 +1447,14 @@ footer{border-top:1px solid var(--line);padding:52px 0 28px;position:relative;z-
     <div class="ct-form-box rv d1">
       <p class="eyebrow" style="margin-bottom:22px;">Free Audit Request</p>
       <form id="ctForm">
-        <div class="f2"><div><label>Name</label><input type="text" required placeholder="Your name"></div><div><label>Email</label><input type="email" required placeholder="you@brand.com"></div></div>
-        <div><label>Brand / Website</label><input type="text" placeholder="yourbrand.com"></div>
-        <div><label>Monthly revenue</label><select><option>Under $10k/month</option><option>$10k&ndash;$50k/month</option><option>$50k&ndash;$200k/month</option><option>$200k+/month</option></select></div>
-        <div><label>Email platform</label><select><option>Klaviyo</option><option>Mailchimp</option><option>Omnisend</option><option>Other / Not sure</option></select></div>
-        <div><label>Biggest email problem right now?</label><textarea placeholder="A couple of lines is plenty."></textarea></div>
+        <input type="hidden" name="access_key" value="bbcd6535-0954-4218-a116-7b524f24c4e1">
+        <input type="hidden" name="subject" value="New Free Audit Request from dottconnect.com">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="f2"><div><label>Name</label><input type="text" name="name" required placeholder="Your name"></div><div><label>Email</label><input type="email" name="email" required placeholder="you@brand.com"></div></div>
+        <div><label>Brand / Website</label><input type="text" name="brand_website" placeholder="yourbrand.com"></div>
+        <div><label>Monthly revenue</label><select name="monthly_revenue"><option>Under $10k/month</option><option>$10k&ndash;$50k/month</option><option>$50k&ndash;$200k/month</option><option>$200k+/month</option></select></div>
+        <div><label>Email platform</label><select name="email_platform"><option>Klaviyo</option><option>Mailchimp</option><option>Omnisend</option><option>Other / Not sure</option></select></div>
+        <div><label>Biggest email problem right now?</label><textarea name="message" placeholder="A couple of lines is plenty."></textarea></div>
         <button type="submit" class="sub-btn" data-magnetic>Send it &rarr;</button>
       </form>
     </div>
@@ -1628,8 +1631,28 @@ document.querySelectorAll('.flip-card').forEach(function(card){
 document.addEventListener('submit',function(e){
   if(e.target.id==='ctForm'){
     e.preventDefault();
-    var btn=e.target.querySelector('.sub-btn');
-    btn.textContent="Sent ✓ We'll reply within 24hrs";btn.style.opacity='.7';btn.disabled=true;
+    var form=e.target;
+    var btn=form.querySelector('.sub-btn');
+    var origText=btn.textContent;
+    btn.textContent='Sending…';btn.disabled=true;btn.style.opacity='.7';
+    var data=new FormData(form);
+    var obj=Object.fromEntries(data.entries());
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify(obj)
+    }).then(function(res){return res.json();}).then(function(res){
+      if(res.success){
+        btn.textContent="Sent ✓ We'll reply within 24hrs";
+        form.reset();
+      }else{
+        btn.textContent='Something went wrong — try again';
+        btn.disabled=false;btn.style.opacity='1';
+      }
+    }).catch(function(){
+      btn.textContent='Something went wrong — try again';
+      btn.disabled=false;btn.style.opacity='1';
+    });
   }
 });
 
