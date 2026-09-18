@@ -1657,8 +1657,29 @@ document.addEventListener('submit',function(e){
 function nlSub(btn){
   var inp=document.getElementById('nlInput');
   if(!inp||!inp.value)return;
-  inp.value='';
-  btn.textContent='Subscribed ✓';btn.style.opacity='.7';btn.disabled=true;
+  var origText=btn.textContent;
+  btn.textContent='Subscribing…';btn.disabled=true;btn.style.opacity='.7';
+  fetch('https://api.web3forms.com/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({
+      access_key:'bbcd6535-0954-4218-a116-7b524f24c4e1',
+      subject:'New newsletter signup from dottconnect.com',
+      email:inp.value,
+      message:'Newsletter signup: '+inp.value
+    })
+  }).then(function(res){return res.json();}).then(function(res){
+    if(res.success){
+      inp.value='';
+      btn.textContent='Subscribed ✓';
+    }else{
+      btn.textContent='Something went wrong — try again';
+      btn.disabled=false;btn.style.opacity='1';
+    }
+  }).catch(function(){
+    btn.textContent='Something went wrong — try again';
+    btn.disabled=false;btn.style.opacity='1';
+  });
 }
 
 /* premium button ripple tracking */
